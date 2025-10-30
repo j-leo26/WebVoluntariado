@@ -1,0 +1,13 @@
+﻿@page
+@model Voluntariado.Pages.Home.IndexModel
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4">Bienvenido al Sistema de Voluntariado</h1>
+    <p class="lead">Conecta voluntarios con organizaciones que ofrecen oportunidades para ayudar.</p>
+
+    <a asp-page="/Users/Create" class="btn btn-success mt-3">Registrarme</a>
+    <a asp-page="/Ofertas/Index" class="btn btn-primary mt-3">Ver Ofertas</a>
+</div>

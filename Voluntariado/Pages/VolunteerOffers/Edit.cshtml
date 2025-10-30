@@ -1,0 +1,24 @@
+﻿@page "{id:int}"
+@model Voluntariado.Pages.VolunteerOffers.EditModel
+@{
+    ViewData["Title"] = "Editar Oferta";
+}
+
+<h2>Editar Oferta</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Título</label>
+        <input asp-for="Offer.Titulo" class="form-control" />
+        <span asp-validation-for="Offer.Titulo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Descripción</label>
+        <textarea asp-for="Offer.Descripcion" class="form-control"></textarea>
+        <span asp-validation-for="Offer.Descripcion" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
+    <a asp-page="Index" class="btn btn-secondary mt-3">Cancelar</a>
+</form>

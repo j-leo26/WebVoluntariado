@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Voluntariado.Models.User>
+<h2>Usuarios</h2>
+<table class="table">
+    <thead>
+        <tr><th>Id</th><th>Nombre</th><th>Usuario</th><th>Rol</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr><td>@user.Id</td><td>@user.Name</td><td>@user.Username</td><td>@user.Role?.Name ?? "Sin rol"</td></tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+﻿@page "{id:int}"
+@model Voluntariado.Pages.Roles.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del Rol";
+}
+
+<h1>Detalles del Rol</h1>
+
+<div>
+    <h4>Nombre: @Model.Role.Name</h4>
+</div>
+
+<p>
+    <a asp-page="Edit" asp-route-id="@Model.Role.Id" class="btn btn-warning">Editar</a>
+    <a asp-page="Index" class="btn btn-secondary">Volver</a>
+</p>

@@ -1,0 +1,33 @@
+﻿@page
+@model Voluntariado.Pages.Offers.IndexModel
+@{
+    ViewData["Title"] = "Ofertas del Ofertante";
+}
+
+<h2>Mis Ofertas</h2>
+
+<a asp-page="Create" class="btn btn-primary mb-3">Crear nueva oferta</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var offer in Model.Offers)
+        {
+            <tr>
+                <td>@offer.Titulo</td>
+                <td>@offer.Descripcion</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@offer.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-page="Details" asp-route-id="@offer.Id" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-page="Delete" asp-route-id="@offer.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model Voluntariado.Pages.VolunteerOffers.DetailsModel
+@{
+    ViewData["Title"] = "Detalles de la Oferta";
+}
+
+<h2>Detalles de la Oferta</h2>
+
+<div class="card p-3 mt-3">
+    <h4>@Model.Offer.Titulo</h4>
+    <p>@Model.Offer.Descripcion</p>
+    <p><strong>Ofertante:</strong> @Model.Offer.User?.Username</p>
+    <p><strong>email:</strong> @Model.Offer.User?.Email</p>
+</div>
+
+<a asp-page="Edit" asp-route-id="@Model.Offer.Id" class="btn btn-primary mt-3">Editar</a>
+<a asp-page="Index" class="btn btn-secondary mt-3">Volver</a>

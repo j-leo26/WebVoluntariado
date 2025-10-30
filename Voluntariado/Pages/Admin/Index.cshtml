@@ -1,0 +1,15 @@
+﻿@page
+@model Voluntariado.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Panel de Administración";
+}
+
+<h2>Panel de Administración</h2>
+
+<p>Desde aquí puedes gestionar el sistema:</p>
+
+<ul>
+    <li><a asp-page="/Users/Index">👥 Gestión de Usuarios</a></li>
+    <li><a asp-page="/Roles/Index">⚙️ Gestión de Roles</a></li>
+    <li><a asp-page="/Ofertas/Index">📢 Gestión de Ofertas</a></li>
+</ul>

@@ -1,0 +1,17 @@
+﻿@page "{id:int}"
+@model Voluntariado.Pages.Users.DeleteModel
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+}
+
+<h2>Eliminar Usuario</h2>
+
+<div class="alert alert-warning">
+    <strong>¿Estás seguro?</strong> Estás a punto de eliminar al usuario:
+    <b>@Model.User.Name (@Model.User.Email)</b>
+</div>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a asp-page="Index" class="btn btn-secondary">Cancelar</a>
+</form>
