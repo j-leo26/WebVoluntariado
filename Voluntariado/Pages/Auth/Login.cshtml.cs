@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Voluntariado.Data;
-using Voluntariado.Models;
 using Voluntariado.Services;
-using System.Linq;
 using BCrypt.Net;
 
 namespace Voluntariado.Pages.Auth
@@ -25,8 +24,16 @@ namespace Voluntariado.Pages.Auth
         [BindProperty]
         public string Password { get; set; } = string.Empty;
 
-        public void OnGet()
-        {
+        [BindProperty(SupportsGet = true)]
+        public string Mensaje { get; set; } = string.Empty;
+
+        public void OnGet() {
+            // Recuperar mensaje desde Session (si existe) y luego removerlo
+            Mensaje = HttpContext.Session.GetString("WarningMessage");
+            if (!string.IsNullOrEmpty(Mensaje))
+            {
+                HttpContext.Session.Remove("WarningMessage");
+            }
         }
 
         public IActionResult OnPost()
@@ -37,8 +44,10 @@ namespace Voluntariado.Pages.Auth
                 return Page();
             }
 
-            // Buscar por correo electrónico en lugar de Username
-            var user = _context.Users.FirstOrDefault(u => u.Email == Email);
+            // Cargar el usuario incluyendo su Rol
+            var user = _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefault(u => u.Email == Email);
 
             if (user == null)
             {
@@ -53,20 +62,25 @@ namespace Voluntariado.Pages.Auth
                 return Page();
             }
 
-            // ✅ Guardar datos básicos en sesión
+            // Guardar datos en sesión
             HttpContext.Session.SetString("UserId", user.Id.ToString());
             HttpContext.Session.SetString("Email", user.Email);
-            HttpContext.Session.SetString("Role", user.Role?.Name ?? "");
 
-            // ✅ Redirigir según rol
-            if (user.Role?.Name == "Ofertante")
-                return RedirectToPage("/VolunteerOffers/Index");
+            var roleName = user.Role?.Name ?? string.Empty;
+            HttpContext.Session.SetString("Role", roleName);
 
-            if (user.Role?.Name == "Administrador")
-                return RedirectToPage("/Admin/Dashboard");
-
-            // Por defecto, voluntario
-            return RedirectToPage("/Index");
+            // Redirigir según rol
+            switch (roleName)
+            {
+                case "Administrador":
+                    return RedirectToPage("/Admin/Index");
+                case "Ofertante":
+                    return RedirectToPage("/VolunteerOffers/Index");
+                case "Voluntario":
+                    return RedirectToPage("/Index");
+                default:
+                    return RedirectToPage("/Index");
+            }
         }
     }
 }

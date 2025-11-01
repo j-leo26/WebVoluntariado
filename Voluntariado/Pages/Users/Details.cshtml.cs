@@ -6,12 +6,12 @@ using Voluntariado.Models;
 
 namespace Voluntariado.Pages.Users
 {
-    public class IndexModel : PageModel
+    public class DetailsModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-        public IndexModel(ApplicationDbContext context) => _context = context;
+        public DetailsModel(ApplicationDbContext context) => _context = context;
 
-        public IList<User> Users { get; set; } = new List<User>();
+        public User User { get; set; } = new();
 
         private bool IsAuthorized()
         {
@@ -19,12 +19,18 @@ namespace Voluntariado.Pages.Users
             return role == "Administrador";
         }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (!IsAuthorized())
                 return RedirectToPage("/AccessDenied");
 
-            Users = await _context.Users.Include(u => u.Role).ToListAsync();
+            User = await _context.Users
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (User == null)
+                return NotFound();
+
             return Page();
         }
     }

@@ -9,21 +9,23 @@ namespace Voluntariado.Pages.Users
     public class DeleteModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        public DeleteModel(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public DeleteModel(ApplicationDbContext context) => _context = context;
 
         [BindProperty]
         public User User { get; set; } = new();
 
+        private bool IsAuthorized()
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            return role == "Administrador";
+        }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            User = await _context.Users
-                .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            if (!IsAuthorized())
+                return RedirectToPage("/AccessDenied");
 
+            User = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id);
             if (User == null)
                 return NotFound();
 
@@ -32,8 +34,10 @@ namespace Voluntariado.Pages.Users
 
         public async Task<IActionResult> OnPostAsync(int id)
         {
-            var userToDelete = await _context.Users.FindAsync(id);
+            if (!IsAuthorized())
+                return RedirectToPage("/AccessDenied");
 
+            var userToDelete = await _context.Users.FindAsync(id);
             if (userToDelete == null)
                 return NotFound();
 

@@ -4,28 +4,32 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Voluntariado.Data;
 using Voluntariado.Models;
-using BCrypt.Net; // 👈 necesario para encriptar
+using BCrypt.Net;
 
 namespace Voluntariado.Pages.Users
 {
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
-
-        public EditModel(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        public EditModel(ApplicationDbContext context) => _context = context;
 
         [BindProperty]
         public User User { get; set; } = new();
 
         public List<SelectListItem> RoleOptions { get; set; } = new();
 
+        private bool IsAuthorized()
+        {
+            var role = HttpContext.Session.GetString("UserRole");
+            return role == "Administrador";
+        }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            User = await _context.Users.FindAsync(id);
+            if (!IsAuthorized())
+                return RedirectToPage("/AccessDenied");
 
+            User = await _context.Users.FindAsync(id);
             if (User == null)
                 return NotFound();
 
@@ -35,56 +39,39 @@ namespace Voluntariado.Pages.Users
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!IsAuthorized())
+                return RedirectToPage("/AccessDenied");
+
             if (!ModelState.IsValid)
             {
                 await LoadRolesAsync();
                 return Page();
             }
 
-            try
+            bool emailExists = await _context.Users
+                .AnyAsync(u => u.Email == User.Email && u.Id != User.Id);
+
+            if (emailExists)
             {
-                // Verificar duplicado de correo al editar
-                bool emailExists = await _context.Users
-                    .AnyAsync(u => u.Email == User.Email && u.Id != User.Id);
-
-                if (emailExists)
-                {
-                    ModelState.AddModelError("User.Email", "⚠️ El correo electrónico ya está registrado.");
-                    await LoadRolesAsync();
-                    return Page();
-                }
-
-                // Buscar el usuario original en la base de datos
-                var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == User.Id);
-                if (existingUser == null)
-                    return NotFound();
-
-                // ✅ Si la contraseña cambió, encriptar la nueva
-                if (!string.IsNullOrWhiteSpace(User.PasswordHash) &&
-                    User.PasswordHash != existingUser.PasswordHash)
-                {
-                    // Encriptar nueva contraseña
-                    User.PasswordHash = BCrypt.Net.BCrypt.HashPassword(User.PasswordHash);
-                }
-                else
-                {
-                    // Mantener la contraseña anterior si no se cambió
-                    User.PasswordHash = existingUser.PasswordHash;
-                }
-
-                _context.Attach(User).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                TempData["SuccessMessage"] = "✅ Usuario actualizado correctamente.";
-                return RedirectToPage("Index");
+                ModelState.AddModelError("User.Email", "⚠️ El correo electrónico ya está registrado.");
+                await LoadRolesAsync();
+                return Page();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Users.Any(u => u.Id == User.Id))
-                    return NotFound();
 
-                throw;
-            }
+            var existingUser = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == User.Id);
+            if (existingUser == null)
+                return NotFound();
+
+            if (!string.IsNullOrWhiteSpace(User.PasswordHash) && User.PasswordHash != existingUser.PasswordHash)
+                User.PasswordHash = BCrypt.Net.BCrypt.HashPassword(User.PasswordHash);
+            else
+                User.PasswordHash = existingUser.PasswordHash;
+
+            _context.Attach(User).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "✅ Usuario actualizado correctamente.";
+            return RedirectToPage("Index");
         }
 
         private async Task LoadRolesAsync()

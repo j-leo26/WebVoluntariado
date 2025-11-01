@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Voluntariado.Data;
 using Voluntariado.Models;
-using System.Threading.Tasks;
 
 namespace Voluntariado.Pages.Roles
 {
@@ -18,13 +17,32 @@ namespace Voluntariado.Pages.Roles
         [BindProperty]
         public Role Role { get; set; } = new Role();
 
+        private IActionResult? VerificarAcceso()
+        {
+            var role = HttpContext.Session.GetString("Role");
+
+            if (string.IsNullOrEmpty(role))
+                return RedirectToPage("/Auth/Login");
+
+            if (role != "Administrador")
+            {
+                TempData["ErrorMessage"] = "⚠️ No tienes permiso para acceder a esta página, inicia sesión con un rol autorizado.";
+                return RedirectToPage("/Auth/Login");
+            }
+
+            return null;
+        }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            var redirect = VerificarAcceso();
+            if (redirect != null)
+                return redirect;
+
             Role = await _context.Roles.FindAsync(id);
             if (Role == null)
                 return NotFound();
 
-            // 🚫 Bloquear acceso a eliminar “Administrador”
             if (Role.Name.Trim().ToLower() == "administrador")
             {
                 TempData["ErrorMessage"] = "⚠️ No se puede eliminar el rol de Administrador.";
@@ -36,11 +54,14 @@ namespace Voluntariado.Pages.Roles
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var redirect = VerificarAcceso();
+            if (redirect != null)
+                return redirect;
+
             var role = await _context.Roles.FindAsync(Role.Id);
             if (role == null)
                 return NotFound();
 
-            // 🚫 Evitar eliminación del rol “Administrador”
             if (role.Name.Trim().ToLower() == "administrador")
             {
                 TempData["ErrorMessage"] = "⚠️ No se puede eliminar el rol de Administrador.";

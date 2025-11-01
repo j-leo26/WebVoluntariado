@@ -1,16 +1,34 @@
 ﻿@page
 @model Voluntariado.Pages.Auth.RegisterModel
 @{
-    ViewData["Title"] = "Registro";
+    ViewData["Title"] = "Registrarse";
 }
 
-<h2>Crear cuenta</h2>
+<h2>Crear una cuenta</h2>
 
 <form method="post">
     <div class="form-group">
+        <label>Nombre</label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Apellido</label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
         <label>Usuario</label>
-        <input asp-for="User.Username" class="form-control" />
-        <span asp-validation-for="User.Username" class="text-danger"></span>
+        <input asp-for="Username" class="form-control" />
+        <span asp-validation-for="Username" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Correo electrónico</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -19,10 +37,24 @@
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Registrarse</button>
+    <div class="form-group">
+        <label>Rol</label>
+        <select asp-for="RoleId" class="form-control">
+            <option value="">Seleccione un rol</option>
+            <option value="2">Ofertante</option>
+            <option value="3">Voluntario</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Registrar</button>
 </form>
 
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="alert alert-danger mt-3">@TempData["ErrorMessage"]</div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success mt-3">@TempData["SuccessMessage"]</div>
 }

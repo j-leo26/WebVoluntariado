@@ -10,7 +10,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddRazorPages();
 
-// 🔹 Agregar caché distribuida y sesiones
+// Agregar caché distribuida y sesiones
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -19,7 +19,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// 🔹 Servicio para hashear contraseñas
+// Servicio para hashear contraseñas
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 var app = builder.Build();
@@ -35,12 +35,12 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// 🔹 Habilitar middleware de sesión
+// Habilitar middleware de sesión
 app.UseSession();
 
 app.MapRazorPages();
 
-// 🔹 Crear roles predeterminados si no existen
+// Crear roles predeterminados si no existen
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();

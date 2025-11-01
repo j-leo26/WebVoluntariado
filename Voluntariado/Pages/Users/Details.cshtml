@@ -1,0 +1,60 @@
+﻿@page "{id:int}"
+@model Voluntariado.Pages.Users.DetailsModel
+@{
+    ViewData["Title"] = "Detalles del Usuario";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-primary text-white rounded-top-4">
+            <h3 class="mb-0 text-center">👤 Detalles del Usuario</h3>
+        </div>
+
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 text-secondary fw-bold">ID</dt>
+                <dd class="col-sm-9">@Model.User.Id</dd>
+
+                <dt class="col-sm-3 text-secondary fw-bold">Nombre</dt>
+                <dd class="col-sm-9">@Model.User.Username</dd>
+
+                <dt class="col-sm-3 text-secondary fw-bold">Correo Electrónico</dt>
+                <dd class="col-sm-9">@Model.User.Email</dd>
+
+                <dt class="col-sm-3 text-secondary fw-bold">Rol</dt>
+                <dd class="col-sm-9">@Model.User.Role?.Name</dd>
+
+                <dt class="col-sm-3 text-secondary fw-bold">Creado por Administrador</dt>
+                <dd class="col-sm-9">
+                    @if (Model.User.CreatedByAdmin)
+                    {
+                        <span class="badge bg-success">Sí</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">No</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 text-secondary fw-bold">Fecha de Creación</dt>
+                <dd class="col-sm-9">
+                    @(Model.User.CreatedAt?.ToString("dd/MM/yyyy HH:mm") ?? "No disponible")
+                </dd>
+            </dl>
+        </div>
+
+        <div class="card-footer bg-light d-flex justify-content-between align-items-center rounded-bottom-4">
+            <a asp-page="Index" class="btn btn-outline-secondary px-4">
+                ⬅️ Volver
+            </a>
+            <div>
+                <a asp-page="Edit" asp-route-id="@Model.User.Id" class="btn btn-warning text-white px-4 me-2">
+                    ✏️ Editar
+                </a>
+                <a asp-page="Delete" asp-route-id="@Model.User.Id" class="btn btn-danger px-4">
+                    🗑️ Eliminar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
