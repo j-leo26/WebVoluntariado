@@ -1,10 +1,56 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Voluntariado Universitario";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- ========================= HERO ========================= -->
+<section class="py-5 bg-light text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Conectando Estudiantes con Oportunidades</h1>
+        <p class="lead mt-3 mb-4">
+            Explora ofertas de voluntariado, ayuda a tu comunidad y participa en actividades que marcan la diferencia.
+        </p>
+
+        <a asp-page="/Offers/Index" class="btn btn-primary btn-lg px-4">Ver Ofertas</a>
+    </div>
+</section>
+
+<!-- ========================= SECCIÓN INFO ========================= -->
+<section class="container my-5">
+    <div class="row text-center">
+
+        <!-- Card 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h3 class="fw-bold">Oportunidades</h3>
+                    <p>Explora actividades de voluntariado ofrecidas por organizaciones y ofertantes registrados.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h3 class="fw-bold">Conexión</h3>
+                    <p>Encuentra roles que se alineen con tus intereses y contribuye con tu talento.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-body">
+                    <h3 class="fw-bold">Impacto</h3>
+                    <p>Forma parte de iniciativas que generan impacto positivo en comunidades locales.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+

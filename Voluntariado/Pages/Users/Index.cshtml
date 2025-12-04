@@ -1,39 +1,78 @@
 ﻿@page
 @model Voluntariado.Pages.Users.IndexModel
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Usuarios";
 }
 
-<h2>Lista de Usuarios</h2>
+<div class="container mt-4">
 
-<p>
-    <a asp-page="Create" class="btn btn-primary">➕ Nuevo Usuario</a>
-</p>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold">
+            <i class="fa-solid fa-users"></i> Gestión de Usuarios
+        </h1>
+        <a asp-page="Create" class="btn btn-primary shadow-sm">
+            <i class="fa-solid fa-user-plus"></i> Nuevo Usuario
+        </a>
+    </div>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Usuario</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model.Users)
-        {
-            <tr>
-                <td>@user.FirstName</td>
-                <td>@user.LastName</td>
-                <td>@user.Username</td>
-                <td>@user.Email</td>
-                <td>@user.Role?.Name</td>
-                <td>
-                    <a asp-page="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-page="Delete" asp-route-id="@user.Id" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- Barra de búsqueda -->
+    <div class="input-group mb-4 shadow-sm">
+        <span class="input-group-text bg-dark text-white">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </span>
+        <input type="text" class="form-control" placeholder="Buscar usuario... (filtro opcional)">
+    </div>
+
+    <!-- Tabla -->
+    <div class="card shadow border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0 align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Usuario</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.FirstName</td>
+                            <td>@user.LastName</td>
+                            <td>@user.Username</td>
+                            <td>@user.Email</td>
+                            <td>
+                                <span class="badge bg-secondary rounded-pill">
+                                    @user.Role?.Name
+                                </span>
+                            </td>
+
+                            <td class="text-center">
+
+                                <a asp-page="Edit" asp-route-id="@user.Id"
+                                   class="btn btn-warning btn-sm me-1">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </a>
+
+                                <a asp-page="Delete" asp-route-id="@user.Id"
+                                   class="btn btn-danger btn-sm">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+<br />

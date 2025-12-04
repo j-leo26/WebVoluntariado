@@ -7,18 +7,36 @@
 <h2>Editar Oferta</h2>
 
 <form method="post">
-    <div class="form-group">
-        <label>Título</label>
-        <input asp-for="Offer.Titulo" class="form-control" />
-        <span asp-validation-for="Offer.Titulo" class="text-danger"></span>
-    </div>
+    <input type="hidden" asp-for="Offer.Id" />
 
     <div class="form-group">
-        <label>Descripción</label>
-        <textarea asp-for="Offer.Descripcion" class="form-control"></textarea>
-        <span asp-validation-for="Offer.Descripcion" class="text-danger"></span>
+        <label for="Title">Título</label>
+        <input asp-for="Offer.Title" class="form-control" />
+        <span asp-validation-for="Offer.Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="Description">Descripción</label>
+        <textarea asp-for="Offer.Description" class="form-control"></textarea>
+        <span asp-validation-for="Offer.Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="EmailContact">Correo de Contacto</label>
+        <input asp-for="Offer.EmailContact" type="email" class="form-control" />
+        <span asp-validation-for="Offer.EmailContact" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <label for="TotalSpots">Número total de cupos</label>
+        <input asp-for="Offer.TotalSpots" type="number" class="form-control" min="1" />
+        <span asp-validation-for="Offer.TotalSpots" class="text-danger"></span>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3">Guardar Cambios</button>
     <a asp-page="Index" class="btn btn-secondary mt-3">Cancelar</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

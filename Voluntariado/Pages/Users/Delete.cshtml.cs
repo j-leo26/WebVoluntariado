@@ -16,7 +16,7 @@ namespace Voluntariado.Pages.Users
 
         private bool IsAuthorized()
         {
-            var role = HttpContext.Session.GetString("UserRole");
+            var role = HttpContext.Session.GetString("Role");
             return role == "Administrador";
         }
 

@@ -1,0 +1,60 @@
+﻿@page
+@model Voluntariado.Pages.Info.ContactModel
+@{
+    ViewData["Title"] = "Contact";
+}
+
+
+<section class="py-5 bg-light">
+    <div class="container">
+
+        <h1 class="display-5 fw-bold text-center mb-4">Contáctanos</h1>
+
+        <p class="text-center lead mb-5">
+            Si tienes preguntas, deseas colaborar o necesitas información adicional,
+            no dudes en escribirnos.
+        </p>
+
+        <div class="row justify-content-center">
+
+            <div class="col-md-8">
+                <div class="p-4 shadow rounded bg-white">
+
+                    <form>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre</label>
+                            <input type="text" class="form-control" placeholder="Tu nombre">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Correo electrónico</label>
+                            <input type="email" class="form-control" placeholder="tucorreo@example.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Mensaje</label>
+                            <textarea class="form-control" rows="5" placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg w-100">
+                            Enviar Mensaje
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container text-center">
+        <h4 class="fw-bold mb-3">Otros medios de contacto</h4>
+
+        <p class="mb-1"><strong>Email:</strong> soporte@voluntariado.com</p>
+        <p><strong>Teléfono:</strong> +57 300 000 0000</p>
+    </div>
+</section>
