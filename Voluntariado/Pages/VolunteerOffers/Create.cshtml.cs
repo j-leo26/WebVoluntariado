@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Voluntariado.Data;
 using Voluntariado.Models;
-using System.Threading.Tasks;
 
-namespace Voluntariado.Pages.Offers
+namespace Voluntariado.Pages.VolunteerOffers
 {
     public class CreateModel : PageModel
     {
@@ -18,19 +17,54 @@ namespace Voluntariado.Pages.Offers
         [BindProperty]
         public VolunteerOffer Offer { get; set; } = new VolunteerOffer();
 
-        public void OnGet() { }
+        private IActionResult? VerificarAcceso()
+        {
+            var role = HttpContext.Session.GetString("Role");
+            if (string.IsNullOrEmpty(role))
+                return RedirectToPage("/Auth/Login");
+
+            if (role != "Ofertante")
+            {
+                TempData["ErrorMessage"] = "⚠️ Solo los ofertantes pueden crear ofertas.";
+                return RedirectToPage("/Auth/Login");
+            }
+
+            return null;
+        }
+
+        public IActionResult OnGet()
+        {
+            var redirect = VerificarAcceso();
+            if (redirect != null)
+                return redirect;
+
+            return Page();
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
+            var redirect = VerificarAcceso();
+            if (redirect != null)
+                return redirect;
+
             if (!ModelState.IsValid)
                 return Page();
 
-            // Simulamos que el usuario 1 est� logueado
-            Offer.UserId = 1;
+            var userIdString = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int userId))
+            {
+                TempData["ErrorMessage"] = "No se pudo identificar al usuario logueado.";
+                return RedirectToPage("/Auth/Login");
+            }
+
+            Offer.UserId = userId;
+            Offer.CreatedAt = DateTime.Now;
+            Offer.ApplicantsCount = 0;
 
             _context.VolunteerOffers.Add(Offer);
             await _context.SaveChangesAsync();
 
+            TempData["SuccessMessage"] = "✅ Oferta creada correctamente.";
             return RedirectToPage("Index");
         }
     }

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Admin</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/Reset.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://kit.fontawesome.com/0c6e5d499a.js" crossorigin="anonymous" defer></script>
+</head>
+
+
+<!-- body con flex column y min-vh-100 para footer sticky -->
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- NAVBAR ADMIN -->
+    <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-page="/Admin/Index">Panel Admin</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navAdmin">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="navAdmin" class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-user-shield"></i> Administrador
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" asp-page="/Admin/Profile">Mi Perfil</a></li>
+                            <li><a class="dropdown-item" asp-page="/Admin/Settings">Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" asp-page="/Auth/Logout" class="m-0 p-0">
+                                    <button type="submit" class="dropdown-item text-danger">Cerrar Sesión</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO: flex-grow para empujar footer -->
+    <main class="flex-grow-1 container py-4">
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER: usa mt-auto o solo está contenido al final por el flex -->
+    <footer class="bg-dark text-light pt-5 pb-4 mt-auto">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-md-4 text-center text-md-start">
+                    <h5 class="fw-bold mb-3">Voluntariado Universitario</h5>
+                    <p class="small">
+                        Conectando estudiantes con oportunidades reales de voluntariado
+                        para generar impacto positivo en la comunidad.
+                    </p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h6 class="fw-bold mb-3">Enlaces</h6>
+                    <ul class="list-unstyled small">
+                        <li><a class="text-decoration-none text-light" asp-page="/Index">Inicio</a></li>
+                        <li><a class="text-decoration-none text-light" asp-page="/Info/About">Sobre Nosotros</a></li>
+                        <li><a class="text-decoration-none text-light" asp-page="/Info/Contact">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <h6 class="fw-bold mb-3">Síguenos</h6>
+                    <a href="#" class="text-light fs-4 me-3"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-light fs-4 me-3"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-light fs-4 me-3"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="text-light fs-4"><i class="bi bi-github"></i></a>
+                </div>
+            </div>
+
+            <hr class="border-secondary my-4">
+
+            <p class="text-center small mb-0">
+                &copy; @DateTime.Now.Year - Plataforma de Voluntariado Universitario
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

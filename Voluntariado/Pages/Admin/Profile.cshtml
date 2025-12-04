@@ -1,0 +1,39 @@
+﻿@page
+@model Voluntariado.Pages.Admin.ProfileModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="container mt-4">
+
+    <h2 class="fw-bold mb-4">👤 Mi Perfil</h2>
+
+    <div class="card shadow-sm p-4">
+
+        <div class="text-center">
+            <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+                 class="rounded-circle mb-3" width="140" />
+            <h4 class="fw-bold">@Model.Nombre</h4>
+            <p class="text-muted">Administrador del Sistema</p>
+        </div>
+
+        <hr />
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Nombre:</strong> @Model.Nombre</p>
+                <p><strong>Correo:</strong> @Model.Correo</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Rol:</strong> Administrador</p>
+                <p><strong>Último acceso:</strong> @Model.UltimoAcceso</p>
+            </div>
+        </div>
+
+        <a asp-page="/Admin/Settings" class="btn btn-primary mt-3 w-100">
+            Editar Información
+        </a>
+    </div>
+
+</div>

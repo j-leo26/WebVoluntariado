@@ -6,12 +6,21 @@
 
 <h2>Detalles de la Oferta</h2>
 
-<div class="card p-3 mt-3">
-    <h4>@Model.Offer.Titulo</h4>
-    <p>@Model.Offer.Descripcion</p>
+<div class="card p-4 mt-3 shadow-sm">
+    <h4 class="mb-3">@Model.Offer.Title</h4>
+
+    <p><strong>Descripción:</strong><br />@Model.Offer.Description</p>
+
+    <p><strong>Correo de contacto:</strong> @Model.Offer.EmailContact</p>
+    <p><strong>Total de cupos:</strong> @Model.Offer.TotalSpots</p>
+    <p><strong>Postulaciones actuales:</strong> @Model.Offer.ApplicantsCount</p>
+
     <p><strong>Ofertante:</strong> @Model.Offer.User?.Username</p>
-    <p><strong>email:</strong> @Model.Offer.User?.Email</p>
+    <p><strong>Email del ofertante:</strong> @Model.Offer.User?.Email</p>
+    <p><strong>Fecha de creación:</strong> @Model.Offer.CreatedAt.ToString("dd/MM/yyyy HH:mm")</p>
 </div>
 
-<a asp-page="Edit" asp-route-id="@Model.Offer.Id" class="btn btn-primary mt-3">Editar</a>
-<a asp-page="Index" class="btn btn-secondary mt-3">Volver</a>
+<div class="mt-4">
+    <a asp-page="Edit" asp-route-id="@Model.Offer.Id" class="btn btn-primary me-2">Editar</a>
+    <a asp-page="Index" class="btn btn-secondary">Volver</a>
+</div>
